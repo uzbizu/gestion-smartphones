@@ -32,3 +32,6 @@ L’orchestration des services se fait via **Docker Compose**.
 
 ## Test de vérification
 >>>>>>> ec7a339 (Test mmmm)
+
+## ready to go
+
