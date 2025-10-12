@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_COMPOSE_PATH = "C:\\Users\\user\\Desktop\\gestion-smartphones\\docker-compose.yml"
         NOTIFY_EMAIL = "bousseynou15@gmail.com"
+        DOCKER_IMAGE = "uzbizu/gestion-smartphones:${GIT_COMMIT}"
     }
 
     stages {
@@ -37,6 +38,18 @@ pipeline {
             }
         }
 
+
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', 
+                                                 usernameVariable: 'DOCKER_USER', 
+                                                 passwordVariable: 'DOCKER_PASS')]) {
+                    bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "docker push ${DOCKER_IMAGE}"
+                }
+            }
+        }
+
         // stage('Send Notification') {
         //     steps {
         //          mail to: "${NOTIFY_EMAIL}",
@@ -45,7 +58,7 @@ pipeline {
         //     }
         //  }
     }
-    
+
 
     // post {
     //     success {
@@ -57,14 +70,30 @@ pipeline {
     // }
 
 
+
+    // stage('Docker Push') {
+    //     steps {
+    //         withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+    //                 bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+    //                 bat "docker push ${DOCKER_IMAGE}"
+    //         }
+    //     }
+    // }
+
+
+
+
+
     post {
         success {
+            echo 'Build and Docker push successful!'
             echo 'Build and deployment successful!'
             mail to: "${NOTIFY_EMAIL}",
                  subject: "SUCCESS: Jenkins Build Notification",
                  body: "The Jenkins build and deployment process has completed successfully."
         }
         failure {
+            echo 'Build or Docker push failed.'
             echo 'Build failed.'
             mail to: "${NOTIFY_EMAIL}",
                  subject: "FAILURE: Jenkins Build Notification",
