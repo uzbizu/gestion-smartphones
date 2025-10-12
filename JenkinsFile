@@ -4,9 +4,6 @@ pipeline {
     environment {
         DOCKER_COMPOSE_PATH = "C:\\Users\\user\\Desktop\\gestion-smartphones\\docker-compose.yml"
         NOTIFY_EMAIL = "bousseynou15@gmail.com"
-        DATE_TAG = "${new Date().format('yyyyMMdd-HHmmss')}" // tag avec date+heure
-        DOCKER_IMAGE_BACKEND = "uzbizu/gestion-smartphones-backend:${DATE_TAG}"
-        DOCKER_IMAGE_FRONTEND = "uzbizu/gestion-smartphones-frontend:${DATE_TAG}"
     }
 
     stages {
@@ -41,17 +38,16 @@ pipeline {
         }
 
 
-        stage('Docker Push') {
+        stage('Push Docker Images') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    echo "Pushing Docker image: ${DOCKER_IMAGE}"
-                    bat """
-                    docker tag gestion-smartphones-backend:latest ${DOCKER_IMAGE_BACKEND}
-                    docker tag gestion-smartphones-frontend:latest ${DOCKER_IMAGE_FRONTEND}
-                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                    docker push ${DOCKER_IMAGE_BACKEND}
-                    docker push ${DOCKER_IMAGE_FRONTEND}
-                    """
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-identifiants', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        bat '''
+                            echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                            docker push %DOCKER_USER%/gestion-smartphones-backend:latest
+                            docker push %DOCKER_USER%/gestion-smartphones-frontend:latest
+                        '''
+                    }
                 }
             }
         }
