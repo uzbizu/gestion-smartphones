@@ -49,40 +49,7 @@ pipeline {
                 }
             }
         }
-
-        // stage('Send Notification') {
-        //     steps {
-        //          mail to: "${NOTIFY_EMAIL}",
-        //              subject: "Jenkins Build Notification",
-        //              body: "The Jenkins build and deployment process has completed successfully."
-        //     }
-        //  }
     }
-
-
-    // post {
-    //     success {
-    //         echo 'Build and deployment successful!'
-    //     }
-    //     failure {
-    //         echo 'Build failed.'
-    //     }
-    // }
-
-
-
-    // stage('Docker Push') {
-    //     steps {
-    //         withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-    //                 bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
-    //                 bat "docker push ${DOCKER_IMAGE}"
-    //         }
-    //     }
-    // }
-
-
-
-
 
     post {
         success {
