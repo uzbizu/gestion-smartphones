@@ -11,6 +11,7 @@ L’orchestration des services se fait via **Docker Compose**.
 ##  AKOUNA MATATA
 
 ##  AKOUNA MATATA #2
+<<<<<<< HEAD
 ##  AKOUNA MATATA #3
 
 ##  KOUNA MATATA #3
@@ -21,3 +22,10 @@ L’orchestration des services se fait via **Docker Compose**.
 
 
 # Test de verification #####
+=======
+
+### mommit 11
+
+
+## Test de vérification
+>>>>>>> ec7a339 (Test mmmm)

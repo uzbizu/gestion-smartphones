@@ -45,13 +45,30 @@ pipeline {
         //     }
         //  }
     }
+    
+
+    // post {
+    //     success {
+    //         echo 'Build and deployment successful!'
+    //     }
+    //     failure {
+    //         echo 'Build failed.'
+    //     }
+    // }
+
 
     post {
         success {
             echo 'Build and deployment successful!'
+            mail to: "${NOTIFY_EMAIL}",
+                 subject: "SUCCESS: Jenkins Build Notification",
+                 body: "The Jenkins build and deployment process has completed successfully."
         }
         failure {
             echo 'Build failed.'
+            mail to: "${NOTIFY_EMAIL}",
+                 subject: "FAILURE: Jenkins Build Notification",
+                 body: "The Jenkins build and deployment process has FAILED. Please check Jenkins logs."
         }
     }
 
