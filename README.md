@@ -56,5 +56,11 @@ L’orchestration des services se fait via **Docker Compose**.
 
 ### SUCCESS BABA
 
+<<<<<<< HEAD
 ### SUCCESS BABA baba
 
+=======
+## ready to go
+
+### SUCCESS BABA 2
+>>>>>>> ebc66ae (Test déclenchement Jenkins auto)

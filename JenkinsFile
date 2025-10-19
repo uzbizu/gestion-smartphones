@@ -37,6 +37,13 @@ pipeline {
             }
         }
 
+        stage('Tag Docker Images') {
+            steps {
+                bat 'docker tag gestion-smartphones-backend:latest ouzba/gestion-smartphones-backend:lts'
+                bat 'docker tag gestion-smartphones-frontend:latest ouzba/gestion-smartphones-frontend:lts'
+            }
+        }
+
 
         stage('Push Docker Images') {
             steps {
