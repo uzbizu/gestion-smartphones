@@ -18,7 +18,7 @@ pipeline {
             steps {
                 // Active l'environnement SonarQube configuré dans Jenkins
                 // "SonarQubeServer" est le nom que tu as défini dans "Manage Jenkins > Configure System"
-                withSonarQubeEnv('SonarQubeServer') { 
+                withSonarQubeEnv('SonarQube_Local') { 
                     script {
                         // Récupère le chemin du SonarQubeScanner installé via "Global Tool Configuration"
                         def scannerHome = tool 'SonarQubeScanner' 
