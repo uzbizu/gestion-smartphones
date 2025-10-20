@@ -13,23 +13,45 @@ pipeline {
             }
         }
 
-        // Étape du pipeline dédiée à l'analyse SonarQube
+        // // Étape du pipeline dédiée à l'analyse SonarQube
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         // Active l'environnement SonarQube configuré dans Jenkins
+        //         // "SonarQubeServer" est le nom que tu as défini dans "Manage Jenkins > Configure System"
+        //         withSonarQubeEnv('SonarQube_Local') { 
+        //             script {
+        //                 // Récupère le chemin du SonarQubeScanner installé via "Global Tool Configuration"
+        //                 def scannerHome = tool 'SonarQubeScanner' 
+                        
+        //                 // Exécute la commande sonar-scanner pour analyser le code
+        //                 // Le scanner envoie les résultats au serveur SonarQube
+        //                 bat "${scannerHome}/bin/sonar-scanner"
+        //             }
+        //         }
+        //     }
+        // }
+
+
+
+                // === Étape 1 : Analyse SonarQube ===
         stage('SonarQube Analysis') {
             steps {
-                // Active l'environnement SonarQube configuré dans Jenkins
-                // "SonarQubeServer" est le nom que tu as défini dans "Manage Jenkins > Configure System"
-                withSonarQubeEnv('SonarQube_Local') { 
+                withSonarQubeEnv('SonarQube_Local') {
                     script {
-                        // Récupère le chemin du SonarQubeScanner installé via "Global Tool Configuration"
-                        def scannerHome = tool 'SonarQubeScanner' 
-                        
-                        // Exécute la commande sonar-scanner pour analyser le code
-                        // Le scanner envoie les résultats au serveur SonarQube
-                        bat "${scannerHome}/bin/sonar-scanner"
+                        def scannerHome = tool 'SonarQubeScanner'
+                        bat """
+                            "${scannerHome}\\bin\\sonar-scanner" ^
+                              -Dsonar.projectKey=sonarqube ^
+                              -Dsonar.sources=. ^
+                              -Dsonar.host.url=http://localhost:10000 ^
+                              -Dsonar.login=sonarqube-token
+                        """
                     }
                 }
             }
         }
+
+
 
         // Étape du pipeline qui vérifie le Quality Gate
         stage('Quality Gate') {
